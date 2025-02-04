@@ -1,0 +1,17 @@
+{
+  "name": "strona_kola_gier",
+  "version": "1.0.0",
+  "description": "projekt strony dla kola podelgającego pod kierunek informatyki collegium witelona",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "express": "^4.21.2"
+  },
+  "keywords": []
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pl">
+<!-- head pozostaje bez zmian -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Strona koła naukowego</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-white sticky-top" id="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="#">Tu ma się znaleźć logo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="../index.html">Strona Główna</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="gamesDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Sekcja gier
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="gamesDropdown">
+                        <li><a class="dropdown-item" href="./game/game_index.html">Strona główna sekcji</a></li>
+                        <li><a class="dropdown-item" href="./game/game_project.html">Nasze projekty</a></li>
+                        <li><a class="dropdown-item" href="./game/game_team.html">Zespół</a></li>
+                        <li><a class="dropdown-item" href="./game/game_gallery.html">Galeria</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="3dPrintDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Sekcja Druku 3D
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="3dPrintDropdown">
+                        <li><a class="dropdown-item" href="./3d_print/3d_print_index.html">Strona główna sekcji</a></li>
+                        <li><a class="dropdown-item" href="./3d_print/3d_print_project.html">Nasze projekty</a></li>
+                        <li><a class="dropdown-item" href="./3d_print/3d_print_team.html">Zespół</a></li>
+                        <li><a class="dropdown-item" href="./3d_print/3d_print_gallery.html">Galeria</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="vrDropdown" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Sekcja VR
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="vrDropdown">
+                        <li><a class="dropdown-item" href="./vr/vr_index.html">Strona główna sekcji</a></li>
+                        <li><a class="dropdown-item" href="./vr/vr_project.html">Nasze projekty</a></li>
+                        <li><a class="dropdown-item" href="./vr/vr_team.html">Zespół</a></li>
+                        <li><a class="dropdown-item" href="./vr/vr_gallery.html">Galeria</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./contact.html">Kontakt</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4">Kontakt</h1>
+    </div>
+</section>
+
+<main class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Kontakt do nas: </h1>
+            <br/>
+            <br/>
+            <p>Mieścimy się w budynku C:
+            <ul>
+                <li>Koło gier - nie pamiętam</li>
+                <li>Koło Druku 3D - C311</li>
+            </ul>
+            </p>
+
+            <h2>Kontakt do najważniejszych osób:</h2>
+            <ul>
+                <li><a href="mailto:aleksander.klosow@collegiumwitelona.pl">dr. Aleksander Klosow - opiekun koła</a></li>
+                <li><a href="mailto:ewa.kubera@studenci.collegiumwitelona.pl">Ewa Kubera - przewodnicząca sekcji Gier</a></li>
+                <li><a href="mailto:"> - przewodnicząca sekcji VR</a></li>
+                <li><a href="mailto:">- przewodnicząca sekcji druku 3D</a></li>
+            </ul>
+
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="contact-section">
+                <h2>Nasza lokalizacja</h2>
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-section">
+            <img src="./img/witelonka_uczelnia_granat.jpg" alt="Logo Collegium Witelona" class="footer-logo" />
+            <span class="footer-text">Collegium Witelona Uczelnia Państwowa</span>
+        </div>
+        <div class="footer-section">
+            <span>© 2025 Wykonanie: Mateusz Bogacz-Drewniak</span>
+            <a href="https://github.com/mateusz-bogacz-collegiumwitelona" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-github fa-lg"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="./js/map.js"></script>
+</body>
+</html>
