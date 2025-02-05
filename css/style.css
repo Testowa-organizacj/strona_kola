@@ -1,10 +1,10 @@
 :root {
-    --matrix-green: #00FF00; /* Używany w: navbar tło, hover na linkach w main, przyciski */
-    --matrix-light: #33FF33; /* Używany w: hover na linkach navbar, hover na linkach footer, hover na przyciskach */
-    --matrix-dark: #00CC00; /* Używany w: tło footer, nagłówki h2 w main, aktywne przyciski */
-    --deep-green: #008000; /* Używany w: linki w głównej treści */
-    --darkest-green: #002200; /* Używany w: kolor tekstu w hero section */
-    --lightest-green: #E6FFE6; /* Używany w: tło hero section */
+    --primary: #0b492b; /* Używany w: navbar tło, hover na linkach w main, przyciski */
+    --primary-light: #0f663c; /* Używany w: hover na linkach navbar, hover na linkach footer, hover na przyciskach */
+    --primary-dark: #08331e; /* Używany w: tło footer, nagłówki h2 w main, aktywne przyciski */
+    --secondary: #009d87; /* Używany w: linki w głównej treści */
+    --primary-darkest: #041d11; /* Używany w: kolor tekstu w hero section */
+    --primary-lightest: #e6f5f2; /* Używany w: tło hero section */
     --white: #FFFFFF; /* Używany w: tekst w navbar, tło main, tekst footer */
 }
 
@@ -14,7 +14,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "proxima-nova"
 }
 
 main {
@@ -24,7 +24,7 @@ main {
 
 /* Nawigacja */
 .navbar {
-    background-color: var(--matrix-dark);
+    background-color: var(--primary-dark);
 }
 
 .navbar.sticky-top {
@@ -39,12 +39,12 @@ main {
 }
 
 .navbar .nav-link:hover {
-    color: var(--deep-green) !important;
+    color: var(--secondary) !important;
 }
 
 .dropdown-menu {
-    background-color: var(--matrix-green);
-    border: 1px solid var(--matrix-dark);
+    background-color: var(--primary);
+    border: 1px solid var(--primary-dark);
 }
 
 .dropdown-item {
@@ -52,8 +52,8 @@ main {
 }
 
 .dropdown-item:hover {
-    background-color: var(--matrix-dark);
-    color: var(--matrix-light) !important;
+    background-color: var(--primary-dark);
+    color: var(--primary-light) !important;
 }
 
 .nav-item.dropdown:hover .dropdown-menu {
@@ -62,31 +62,31 @@ main {
 
 /* Sekcja hero */
 .hero-section {
-    background: linear-gradient(45deg, var(--matrix-green), var(--lightest-green));
+    background: linear-gradient(45deg, var(--primary), var(--primary-lightest));
     padding: 4rem 0;
     text-align: center;
 }
 
 .hero-section h1 {
-    color: var(--darkest-green);
+    color: var(--primary-darkest);
 }
 
 /* Przyciski */
 .btn-primary {
-    background-color: var(--deep-green) !important;
-    border-color: var(--matrix-green) !important;
+    background-color: var(--secondary) !important;
+    border-color: var(--primary) !important;
     color: var(--white);
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: var(--darkest-green) !important;
+    background-color: var(--primary-darkest) !important;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:active {
-    background-color: var(--matrix-dark) !important;
+    background-color: var(--primary-dark) !important;
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -99,7 +99,7 @@ main {
     position: relative;
     z-index: 1;
     border-radius: 8px;
-    border: 2px solid var(--matrix-dark);
+    border: 2px solid var(--primary-dark);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -125,16 +125,16 @@ main {
 
 /* Główna zawartość */
 main h1, main h2 {
-    color: var(--matrix-dark);
+    color: var(--primary-dark);
 }
 
 main a {
-    color: var(--deep-green);
+    color: var(--secondary);
     text-decoration: none;
 }
 
 main a:hover {
-    color: var(--matrix-green);
+    color: var(--primary);
     text-decoration: underline;
 }
 
@@ -168,13 +168,13 @@ main a:hover {
 
 /* Ikony społecznościowe */
 .social-link {
-    color: var(--matrix-dark);
+    color: var(--primary-dark);
     transition: color 0.3s ease;
     margin: 0 0.5rem;
 }
 
 .social-link:hover {
-    color: var(--matrix-green);
+    color: var(--primary);
 }
 
 /* Gallery styles */
@@ -269,7 +269,7 @@ main a:hover {
 
 .close-btn:hover {
     transform: scale(1.1);
-    color: var(--matrix-light);
+    color: var(--primary-light);
 }
 
 .image-counter {
@@ -287,7 +287,7 @@ main a:hover {
 
 /* Stopka */
 .footer {
-    background-color: var(--matrix-dark);
+    background-color: var(--primary-dark);
     color: var(--white);
     padding: 0.8rem 0;
     text-align: center;
@@ -315,11 +315,6 @@ main a:hover {
     margin-right: 1rem;
 }
 
-.footer-text {
-    font-weight: bold;
-    color: var(--matrix-light);
-}
-
 .footer a {
     color: var(--white);
     transition: color 0.3s ease;
@@ -327,7 +322,7 @@ main a:hover {
 }
 
 .footer a:hover {
-    color: var(--matrix-light);
+    color: var(--primary-light);
 }
 
 /* Thumbnails */
@@ -357,7 +352,7 @@ main a:hover {
 }
 
 .thumbnail.active {
-    border-color: var(--matrix-green);
+    border-color: var(--primary);
 }
 
 .thumbnail:hover {
