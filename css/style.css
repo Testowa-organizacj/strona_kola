@@ -38,6 +38,10 @@ main {
     color: var(--white) !important;
 }
 
+.navbar-brand img {
+    max-width: 50px;
+}
+
 .navbar .nav-link:hover {
     color: var(--secondary) !important;
 }
