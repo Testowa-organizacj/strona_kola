@@ -6,53 +6,62 @@
     --primary-darkest: #041d11; /* Używany w: kolor tekstu w hero section */
     --primary-lightest: #e6f5f2; /* Używany w: tło hero section */
     --white: #FFFFFF; /* Używany w: tekst w navbar, tło main, tekst footer */
+
+    /* Często używane wartości */
+    --transition-standard: all 0.3s ease; /* Animacja */
+    --box-shadow-standard: 0 4px 8px rgba(0, 0, 0, 0.1); /*Cień pod elementami*/
+    --border-radius-standard: 8px; /* Zaokrąglenie rogów */
 }
 
-/* Podstawowe style */
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
-    font-family: "proxima-nova"
+    font-family: "proxima-nova";
+    background-color: var(--white);
 }
 
 main {
     flex: 1;
-    background-color: var(--white);
 }
 
-/* Nawigacja */
+.transition-standard {
+    transition: var(--transition-standard);
+}
+
+.hover-transform {
+    transition: var(--transition-standard);
+}
+
+.hover-transform:hover {
+    transform: translateY(-5px);
+}
+
 .navbar {
     background-color: var(--primary-dark);
-}
-
-.navbar.sticky-top {
     position: sticky;
     top: 0;
     z-index: 1030;
 }
 
 .navbar .nav-link,
-.navbar .navbar-brand {
+.navbar .navbar-brand,
+.dropdown-item {
     color: var(--white) !important;
-}
-
-.navbar-brand img {
-    max-width: 50px;
 }
 
 .navbar .nav-link:hover {
     color: var(--secondary) !important;
 }
 
+.navbar-brand img {
+    max-width: 50px;
+}
+
 .dropdown-menu {
     background-color: var(--primary);
     border: 1px solid var(--primary-dark);
-}
-
-.dropdown-item {
-    color: var(--white) !important;
 }
 
 .dropdown-item:hover {
@@ -64,7 +73,6 @@ main {
     display: block;
 }
 
-/* Sekcja hero */
 .hero-section {
     background: linear-gradient(45deg, var(--primary), var(--primary-lightest));
     padding: 4rem 0;
@@ -75,101 +83,33 @@ main {
     color: var(--primary-darkest);
 }
 
-/* Przyciski */
 .btn-primary {
     background-color: var(--primary-darkest) !important;
     border-color: var(--primary) !important;
     color: var(--white);
-    transition: all 0.3s ease;
+    transition: var(--transition-standard);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow-standard);
 }
 
 .btn-primary:active {
     background-color: var(--primary-dark) !important;
     transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Style dla mapy */
-#map {
-    height: 350px;
-    width: 100%;
-    margin-top: 20px;
-    position: relative;
-    z-index: 1;
-    border-radius: 8px;
-    border: 2px solid var(--primary-dark);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.contact-section {
-    position: relative;
-    z-index: 1;
-    background: var(--white);
-    padding: 2rem 0;
-}
-
-.leaflet-control-container {
-    z-index: 2;
-}
-
-.leaflet-top,
-.leaflet-bottom {
-    z-index: 2;
-}
-
-.leaflet-popup {
-    z-index: 3;
-}
-
-/* Główna zawartość */
-main h1, main h2 {
-    color: var(--primary-dark);
-}
-
-main a {
-    color: var(--secondary);
-    text-decoration: none;
-}
-
-main a:hover {
-    color: var(--primary);
-    text-decoration: underline;
-}
-
-/* Sekcja zespołu */
-.card-img-container {
-    width: 100%;
-    padding-top: 100%;
-    position: relative;
-    overflow: hidden;
-    border-top-left-radius: 0.375rem;
-    border-top-right-radius: 0.375rem;
-}
-
-.card-img-container img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 .card {
-    transition: transform 0.3s ease;
+    transition: var(--transition-standard);
     margin-bottom: 1.5rem;
+    background-color: var(--white);
 }
 
 .card:hover {
     transform: translateY(-5px);
 }
 
-/* Ikony społecznościowe */
 .social-link {
     color: var(--primary-dark);
     transition: color 0.3s ease;
@@ -180,29 +120,35 @@ main a:hover {
     color: var(--primary);
 }
 
-/* Gallery styles */
+#map {
+    height: 350px;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: var(--border-radius-standard);
+    border: 2px solid var(--primary-dark);
+    box-shadow: var(--box-shadow-standard);
+    position: relative;
+    z-index: 1;
+}
+
 .gallery-img {
     cursor: pointer;
-    transition: transform 0.3s ease;
-    border-radius: 8px;
     width: 100%;
     height: 250px;
     object-fit: cover;
     margin-bottom: 1rem;
+    border-radius: var(--border-radius-standard);
+    transition: var(--transition-standard);
 }
 
 .gallery-img:hover {
     transform: scale(1.05);
 }
 
-/* Lightbox styles */
 .lightbox {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0, 0, 0, 0.95);
     z-index: 2000;
     flex-direction: column;
@@ -231,12 +177,12 @@ main a:hover {
     transform: translateY(-50%);
     background: rgba(0, 204, 0, 0.2);
     border: none;
-    color: white;
+    color: var(--white);
     padding: 1rem;
     cursor: pointer;
     border-radius: 50%;
     z-index: 2001;
-    transition: all 0.3s ease;
+    transition: var(--transition-standard);
     width: 50px;
     height: 50px;
     display: flex;
@@ -244,51 +190,14 @@ main a:hover {
     justify-content: center;
 }
 
-.prev-btn {
-    left: 20px;
-}
-
-.next-btn {
-    right: 20px;
-}
+.prev-btn { left: 20px; }
+.next-btn { right: 20px; }
 
 .nav-btn:hover {
     background: rgba(0, 204, 0, 0.4);
     transform: translateY(-50%) scale(1.1);
 }
 
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 40px;
-    cursor: pointer;
-    z-index: 2001;
-    transition: all 0.3s ease;
-}
-
-.close-btn:hover {
-    transform: scale(1.1);
-    color: var(--primary-light);
-}
-
-.image-counter {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    font-size: 1rem;
-    z-index: 2001;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-}
-
-/* Stopka */
 .footer {
     background-color: var(--primary-dark);
     color: var(--white);
@@ -306,119 +215,16 @@ main a:hover {
     align-items: center;
 }
 
-.footer-section {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.footer-logo {
-    height: 50px;
-    width: auto;
-    margin-right: 1rem;
-}
-
 .footer a {
     color: var(--white);
-    transition: color 0.3s ease;
     text-decoration: none;
+    transition: var(--transition-standard);
 }
 
 .footer a:hover {
     color: var(--primary-light);
 }
 
-/* Thumbnails */
-.thumbnails-container {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 10px 0;
-}
-
-#thumbnails-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding: 0 50px;
-    overflow-x: auto;
-}
-
-.thumbnail {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-}
-
-.thumbnail.active {
-    border-color: var(--primary);
-}
-
-.thumbnail:hover {
-    transform: scale(1.1);
-}
-
-/* Style dla sekcji twórców i technologii */
-.member-card, .tech-card {
-    transition: transform 0.2s ease-in-out;
-    background-color: var(--primary-lightest);
-}
-
-.tech-card:hover, .member-card:hover {
-    transform: translateX(10px);
-}
-
-.member-info {
-    padding: 0.5rem;
-}
-
-.technologies i {
-    width: 40px;
-    text-align: center;
-}
-
-.social-links a {
-    transition: all 0.2s ease-in-out;
-}
-
-.social-links a:hover {
-    transform: translateY(-2px);
-}
-
-.card {
-    background-color: var(--white);
-}
-
-.card-body i.fa-users,
-.card-body i.fa-code {
-    color: var(--primary);
-}
-
-.tech-card i.fa-html5 {
-    color: #e34f26;
-}
-
-.tech-card i.fa-css3-alt {
-    color: #1572b6;
-}
-
-.tech-card i.fa-bootstrap {
-    color: #7952b3;
-}
-
-.tech-card i.fa-js {
-    color: #f7df1e;
-}
-
-.tech-card i.fa-font-awesome {
-    color: #339af0;
-}
-
-/* Responsywność */
 @media (max-width: 768px) {
     .hero-section {
         padding: 2rem 0;
@@ -426,7 +232,6 @@ main a:hover {
 
     .btn-primary {
         margin: 5px;
-        display: block;
         width: 100%;
     }
 
@@ -435,12 +240,9 @@ main a:hover {
         gap: 0.8rem;
     }
 
-    .footer-section {
-        justify-content: center;
-    }
-
-    .footer-logo {
-        height: 45px;
+    #map {
+        height: 300px;
+        margin-bottom: 30px;
     }
 
     .lightbox-main img {
@@ -451,20 +253,5 @@ main a:hover {
         padding: 0.8rem;
         width: 40px;
         height: 40px;
-    }
-
-    .close-btn {
-        top: 10px;
-        right: 20px;
-        font-size: 30px;
-    }
-
-    #map {
-        height: 300px;
-        margin-bottom: 30px;
-    }
-
-    .col-md-6 {
-        margin-bottom: 2rem;
     }
 }
