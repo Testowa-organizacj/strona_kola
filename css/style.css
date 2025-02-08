@@ -77,14 +77,13 @@ main {
 
 /* Przyciski */
 .btn-primary {
-    background-color: var(--secondary) !important;
+    background-color: var(--primary-darkest) !important;
     border-color: var(--primary) !important;
     color: var(--white);
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-darkest) !important;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -361,6 +360,62 @@ main a:hover {
 
 .thumbnail:hover {
     transform: scale(1.1);
+}
+
+/* Style dla sekcji twórców i technologii */
+.member-card, .tech-card {
+    transition: transform 0.2s ease-in-out;
+    background-color: var(--primary-lightest);
+}
+
+.tech-card:hover, .member-card:hover {
+    transform: translateX(10px);
+}
+
+.member-info {
+    padding: 0.5rem;
+}
+
+.technologies i {
+    width: 40px;
+    text-align: center;
+}
+
+.social-links a {
+    transition: all 0.2s ease-in-out;
+}
+
+.social-links a:hover {
+    transform: translateY(-2px);
+}
+
+.card {
+    background-color: var(--white);
+}
+
+.card-body i.fa-users,
+.card-body i.fa-code {
+    color: var(--primary);
+}
+
+.tech-card i.fa-html5 {
+    color: #e34f26;
+}
+
+.tech-card i.fa-css3-alt {
+    color: #1572b6;
+}
+
+.tech-card i.fa-bootstrap {
+    color: #7952b3;
+}
+
+.tech-card i.fa-js {
+    color: #f7df1e;
+}
+
+.tech-card i.fa-font-awesome {
+    color: #339af0;
 }
 
 /* Responsywność */
