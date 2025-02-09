@@ -1,0 +1,39 @@
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4">Zespół <%= title %></h1>
+        <p class="lead"><%= description %></p>
+    </div>
+</section>
+
+<main class="container mt-5">
+    <section class="team-section">
+        <div class="row g-4">
+            <% team.forEach(member => { %>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-img-container">
+                            <img src="/img/<%= section %>/team/<%= member.image %>" class="card-img-top" alt="<%= member.name %>">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title"><%= member.name %></h3>
+                            <h5 class="text-muted"><%= member.role %></h5>
+                            <p class="card-text"><%= member.description %></p>
+                            <div class="social-links">
+                                <% if (member.github) { %>
+                                    <a href="<%= member.github %>" class="social-link" title="GitHub">
+                                        <i class="fa-brands fa-github fa-lg"></i>
+                                    </a>
+                                <% } %>
+                                <% if (member.linkedin) { %>
+                                    <a href="<%= member.linkedin %>" class="social-link" title="LinkedIn">
+                                        <i class="fa-brands fa-linkedin fa-lg"></i>
+                                    </a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+</main>

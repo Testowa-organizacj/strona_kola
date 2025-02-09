@@ -1,0 +1,38 @@
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4">Projekty <%= title %></h1>
+        <p class="lead"><%= description %></p>
+    </div>
+</section>
+
+<main class="container mt-5">
+    <% projects.forEach((project, index) => { %>
+        <div class="row mb-5 align-items-center <%= index % 2 !== 0 ? 'flex-row-reverse' : '' %>">
+            <div class="col-md-6">
+                <div class="image-container">
+                    <img src="/img/<%= section %>/project/<%= project.image %>"
+                         alt="<%= project.title %>"
+                         class="img-fluid rounded shadow">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 h-100">
+                    <div class="card-body">
+                        <h2 class="card-title"><%= project.title %></h2>
+                        <p class="card-text"><%= project.description %></p>
+                        <% if (project.features && project.features.length > 0) { %>
+                            <ul class="list-unstyled mb-3">
+                                <% project.features.forEach(feature => { %>
+                                    <li><i class="fas fa-check text-success me-2"></i><%= feature %></li>
+                                <% }); %>
+                            </ul>
+                        <% } %>
+                        <% if (project.link) { %>
+                            <a href="<%= project.link %>" class="btn btn-primary">Zobacz więcej</a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% }); %>
+</main>

@@ -1,0 +1,36 @@
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4">Galeria <%= title %></h1>
+        <p class="lead"><%= description %></p>
+    </div>
+</section>
+
+<main class="container mt-5">
+    <div id="gallery-container">
+        <div class="row g-4" id="gallery-grid">
+            <!-- Tu JavaScript wstawi zdjęcia -->
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <button class="close-btn">&times;</button>
+        <button class="nav-btn prev-btn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-btn next-btn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="lightbox-main">
+            <img id="lightbox-img" src="" alt="">
+        </div>
+        <div class="image-counter">
+            <span id="current-image">1</span> / <span id="total-images">1</span>
+        </div>
+        <div class="thumbnails-container">
+            <div id="thumbnails-wrapper">
+                <!-- Tu JavaScript wstawi miniatury -->
+            </div>
+        </div>
+    </div>
+</main>
