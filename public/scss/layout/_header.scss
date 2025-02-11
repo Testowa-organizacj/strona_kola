@@ -1,0 +1,16 @@
+@use '../base/variables' as *;
+@use '../base/mixins' as *;
+
+.hero-section {
+  background: linear-gradient(45deg, $primary, $primary-lightest);
+  padding: 4rem 0;
+  text-align: center;
+
+  h1 {
+    color: $primary-darkest;
+  }
+
+  @include media-breakpoint-down(md) {
+    padding: 2rem 0;
+  }
+}

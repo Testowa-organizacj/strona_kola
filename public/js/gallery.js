@@ -1,6 +1,25 @@
 class Gallery {
     constructor() {
-        // Initialize DOM elements
+        this.section = this.detectSection();
+        this.images = [];
+        this.currentIndex = 0;
+        
+        // Poczekaj na załadowanie DOM przed inicjalizacją elementów
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.initialize());
+        } else {
+            this.initialize();
+        }
+    }
+
+    initialize() {
+        if (this.initializeElements()) {
+            this.setupEventListeners();
+            this.init();
+        }
+    }
+
+    initializeElements() {
         this.galleryGrid = document.getElementById('gallery-grid');
         this.lightbox = document.getElementById('lightbox');
         this.lightboxImg = document.getElementById('lightbox-img');
@@ -8,16 +27,18 @@ class Gallery {
         this.currentImageSpan = document.getElementById('current-image');
         this.totalImagesSpan = document.getElementById('total-images');
 
-        this.images = [];
-        this.currentIndex = 0;
-        this.section = this.detectSection();
+        // Sprawdź czy wszystkie wymagane elementy istnieją
+        if (!this.galleryGrid || !this.lightbox || !this.lightboxImg) {
+            console.error('Nie znaleziono wymaganych elementów galerii');
+            return false;
+        }
 
         // Initially hide the lightbox
         if (this.lightbox) {
             this.lightbox.style.display = 'none';
         }
 
-        this.setupEventListeners();
+        return true;
     }
 
     detectSection() {
@@ -25,10 +46,12 @@ class Gallery {
         if (path.includes('/game/')) return 'game';
         if (path.includes('/3d_print/')) return '3d_print';
         if (path.includes('/vr/')) return 'vr';
-        return 'unknown';
+        return null;
     }
 
     setupEventListeners() {
+        if (!this.lightbox) return;
+
         // Close button
         const closeBtn = this.lightbox.querySelector('.close-btn');
         if (closeBtn) {
@@ -54,55 +77,95 @@ class Gallery {
             if (e.key === 'ArrowLeft') this.navigateImages('prev');
             if (e.key === 'ArrowRight') this.navigateImages('next');
         });
+
+        // Prevent scrolling when lightbox is open
+        this.lightbox.addEventListener('wheel', (e) => {
+            if (this.lightbox.style.display !== 'none') {
+                e.preventDefault();
+            }
+        });
     }
 
     async init() {
-        try {
-            const response = await fetch(`/api/gallery-images/${this.section}`);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            this.images = await response.json();
+        if (!this.section) {
+            console.error('Nie można wykryć sekcji');
+            this.showErrorMessage('Nieprawidłowa sekcja');
+            return;
+        }
 
-            if (this.images.length > 0) {
+        try {
+            console.log('Pobieranie obrazów dla sekcji:', this.section);
+            const response = await fetch(`/api/gallery-images/${this.section}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            this.images = await response.json();
+            console.log('Pobrane obrazy:', this.images);
+
+            if (this.images && this.images.length > 0) {
                 this.renderGallery();
-                this.totalImagesSpan.textContent = this.images.length;
+                if (this.totalImagesSpan) {
+                    this.totalImagesSpan.textContent = this.images.length;
+                }
             } else {
                 this.showNoImagesMessage();
             }
         } catch (error) {
             console.error('Error initializing gallery:', error);
-            this.showErrorMessage();
+            this.showErrorMessage(error.message);
         }
     }
 
     renderGallery() {
+        if (!this.galleryGrid) return;
+        
         this.galleryGrid.innerHTML = '';
 
         this.images.forEach((image, index) => {
             const col = document.createElement('div');
-            col.className = 'col-md-4 col-sm-6';
+            col.className = 'col-md-4 col-sm-6 mb-4';
+
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'gallery-img-container';
 
             const img = document.createElement('img');
             img.src = image.src;
             img.alt = image.alt;
-            img.className = 'img-fluid gallery-img';
-            img.addEventListener('click', () => this.openLightbox(index));
+            img.className = 'gallery-img';
+            
+            imgContainer.addEventListener('click', () => this.openLightbox(index));
 
-            col.appendChild(img);
+            imgContainer.appendChild(img);
+            col.appendChild(imgContainer);
             this.galleryGrid.appendChild(col);
         });
     }
 
     openLightbox(index) {
+        if (!this.lightbox || !this.lightboxImg) return;
+        
         this.currentIndex = index;
         this.updateLightboxImage();
         this.lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        
+        // Dodaj klasę do animacji
+        this.lightbox.classList.add('active');
     }
 
     closeLightbox() {
+        if (!this.lightbox) return;
+        
+        this.lightbox.classList.remove('active');
         this.lightbox.style.display = 'none';
+        document.body.style.overflow = ''; // Przywróć scrollowanie
     }
 
     navigateImages(direction) {
+        if (!this.images.length) return;
+        
         if (direction === 'prev') {
             this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
         } else {
@@ -112,29 +175,34 @@ class Gallery {
     }
 
     updateLightboxImage() {
+        if (!this.lightboxImg || !this.currentImageSpan) return;
+        
         const image = this.images[this.currentIndex];
-        this.lightboxImg.src = image.src;
-        this.lightboxImg.alt = image.alt;
-        this.currentImageSpan.textContent = this.currentIndex + 1;
+        if (image) {
+            this.lightboxImg.src = image.src;
+            this.lightboxImg.alt = image.alt;
+            this.currentImageSpan.textContent = this.currentIndex + 1;
+        }
     }
 
     showNoImagesMessage() {
+        if (!this.galleryGrid) return;
+        
         this.galleryGrid.innerHTML = `
             <div class="col-12 text-center">
                 <p>Brak zdjęć w galerii.</p>
             </div>`;
     }
 
-    showErrorMessage() {
+    showErrorMessage(message = 'Wystąpił błąd podczas ładowania galerii') {
+        if (!this.galleryGrid) return;
+        
         this.galleryGrid.innerHTML = `
             <div class="col-12 text-center">
-                <p>Wystąpił błąd podczas ładowania galerii. Proszę odświeżyć stronę.</p>
+                <p class="text-danger">${message}. Proszę odświeżyć stronę.</p>
             </div>`;
     }
 }
 
-// Initialize gallery after DOM content is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const gallery = new Gallery();
-    gallery.init();
-});
+// Inicjalizacja galerii
+const gallery = new Gallery();

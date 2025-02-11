@@ -1,0 +1,32 @@
+// Kolory
+$primary: #0b492b;
+$primary-light: #0f663c;
+$primary-dark: #08331e;
+$primary-darkest: #041d11;
+$primary-lightest: #e6f5f2;
+$secondary: #009d87;
+$white: #FFFFFF;
+
+// Breakpointy
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+// Podstawowe zmienne
+$transition-standard: all 0.3s ease;
+$box-shadow-standard: 0 4px 8px rgba(0,0,0,0.1);
+$border-radius-standard: 8px;
+
+// Lightbox
+$lightbox-overlay: rgba(0, 0, 0, 0.95);
+$lightbox-control-bg: rgba(0, 204, 0, 0.2);
+$lightbox-control-bg-hover: rgba(0, 204, 0, 0.4);
+
+// W _variables.scss
+// Zamiast mapy $z-index, użyjmy pojedynczych zmiennych
+$z-index-navbar: 1030;
+$z-index-lightbox: 2000;
+$z-index-lightbox-controls: 2001;

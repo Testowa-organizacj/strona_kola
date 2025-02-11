@@ -1,0 +1,40 @@
+@use '../base/variables' as *;
+
+.navbar {
+  background-color: $primary-dark;
+  position: sticky;
+  top: 0;
+  z-index: z-index-navbar;
+  
+  &-brand {
+    img {
+      max-width: 50px;
+    }
+  }
+
+  .nav-link,
+  .navbar-brand,
+  .dropdown-item {
+    color: $white !important;
+  }
+
+  .nav-link:hover {
+    color: $secondary !important;
+  }
+}
+
+.dropdown {
+  &-menu {
+    background-color: $primary;
+    border: 1px solid $primary-dark;
+  }
+
+  &-item:hover {
+    background-color: $primary-dark;
+    color: $primary-light !important;
+  }
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}

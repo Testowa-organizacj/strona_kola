@@ -1,0 +1,6 @@
+
+> strona_kola_gier@1.0.0 sass
+> sass public/scss/main.scss:public/css/style.css --watch
+
+Sass is watching for changes. Press Ctrl-C to stop.
+

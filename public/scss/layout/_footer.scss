@@ -1,0 +1,34 @@
+@use '../base/variables' as *;
+@use '../base/mixins' as *;
+
+.footer {
+  background-color: $primary-dark;
+  color: $white;
+  padding: 0.8rem 0;
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: auto;
+  position: relative;
+  z-index: 2;
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include media-breakpoint-down(md) {
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+  }
+
+  a {
+    color: $white;
+    text-decoration: none;
+    transition: $transition-standard;
+
+    &:hover {
+      color: $primary-light;
+    }
+  }
+}

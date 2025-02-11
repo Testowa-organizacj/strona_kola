@@ -1,9 +1,56 @@
+require('dotenv').config();
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
+const sanitize = require('express-mongo-sanitize');
 
 const app = express();
+
+// Podstawowe zabezpieczenia
+app.use(helmet());
+app.disable('x-powered-by');
+
+// Dodatkowe zabezpieczenia XSS przez helmet
+app.use(helmet.xssFilter());
+app.use(helmet.noSniff());
+
+// CSP
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        fontSrc: ["'self'", 'https:'],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+    }
+}));
+
+// Rate limiting
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minut
+    max: 100 // limit requestów na windowMs
+});
+app.use('/api/', limiter);
+
+// CORS
+app.use(cors({
+    origin: process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
+    methods: ['GET'],
+    credentials: true
+}));
+
+// Parsowanie body i limitowanie rozmiaru
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
+// Sanityzacja danych
+app.use(sanitize());
 
 // Konfiguracja EJS
 app.set('view engine', 'ejs');
@@ -12,13 +59,29 @@ app.use(expressLayouts);
 app.set('layout', 'layouts/main');
 
 // Pliki statyczne
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: '1d', // Cache na 1 dzień
+    etag: true
+}));
+
+// Font Awesome
+app.use('/fontawesome', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free')));
 
 // Middleware do przekazywania aktywnej ścieżki
 app.use((req, res, next) => {
     res.locals.path = req.path;
     next();
 });
+
+// Stałe i konfiguracja
+const VALID_SECTIONS = ['game', '3d_print', 'vr'];
+const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.svg']);
+
+// Walidacja sekcji
+const validateSection = (section) => {
+    const sanitizedSection = section.toLowerCase().trim();
+    return VALID_SECTIONS.includes(sanitizedSection) ? sanitizedSection : null;
+};
 
 // Strony główne
 app.get('/', (req, res) => {
@@ -41,11 +104,12 @@ app.get('/realization', (req, res) => {
 
 // Sekcje
 app.get('/:section/index', (req, res) => {
-    const validSections = ['game', '3d_print', 'vr'];
-    const section = req.params.section;
-
-    if (!validSections.includes(section)) {
-        return res.status(404).send('Not found');
+    const section = validateSection(req.params.section);
+    if (!section) {
+        return res.status(404).render('pages/error', {
+            title: '404 - Nie znaleziono',
+            error: 'Nieprawidłowa sekcja'
+        });
     }
 
     const indexData = {
@@ -54,8 +118,9 @@ app.get('/:section/index', (req, res) => {
             description: 'Tworzymy gry i aplikacje',
             content: [
                 {
-                    title: 'Aktualności',
-                    text: 'Najnowsze informacje...'
+                    title: 'Coś tu będzie',
+                    text: `Nie wiem jak tu tworzyć akapity.
+Chyba tak`
                 }
             ]
         },
@@ -91,11 +156,12 @@ app.get('/:section/index', (req, res) => {
 });
 
 app.get('/:section/team', (req, res) => {
-    const validSections = ['game', '3d_print', 'vr'];
-    const section = req.params.section;
-
-    if (!validSections.includes(section)) {
-        return res.status(404).send('Not found');
+    const section = validateSection(req.params.section);
+    if (!section) {
+        return res.status(404).render('pages/error', {
+            title: '404 - Nie znaleziono',
+            error: 'Nieprawidłowa sekcja'
+        });
     }
 
     const teamData = {
@@ -107,7 +173,7 @@ app.get('/:section/team', (req, res) => {
                     name: 'Ewa Kubera',
                     role: 'Przewodnicząca sekcji Gier',
                     description: 'Pasjonatka gier...',
-                    image: 'piter.svg',
+                    image: 'project.jpg',
                     github: '#',
                     linkedin: '#'
                 }
@@ -121,7 +187,7 @@ app.get('/:section/team', (req, res) => {
                     name: 'Mateusz Chimkowski',
                     role: 'Prezes dupy',
                     description: 'Pasjonat Loli...',
-                    image: 'piter.svg',
+                    image: 'project.jpg',
                     github: '#',
                     linkedin: '#'
                 }
@@ -135,7 +201,7 @@ app.get('/:section/team', (req, res) => {
                     name: 'Wojciech Pokoniczeny',
                     role: 'Przewodniczący Komitetu Konfederacji',
                     description: 'Pasjonatka piękna Krzysia Bosaka...',
-                    image: 'piter.svg',
+                    image: 'project.jpg  ',
                     github: '#',
                     linkedin: '#'
                 }
@@ -153,11 +219,12 @@ app.get('/:section/team', (req, res) => {
 });
 
 app.get('/:section/gallery', (req, res) => {
-    const validSections = ['game', '3d_print', 'vr'];
-    const section = req.params.section;
-
-    if (!validSections.includes(section)) {
-        return res.status(404).send('Not found');
+    const section = validateSection(req.params.section);
+    if (!section) {
+        return res.status(404).render('pages/error', {
+            title: '404 - Nie znaleziono',
+            error: 'Nieprawidłowa sekcja'
+        });
     }
 
     const galleryData = {
@@ -184,11 +251,12 @@ app.get('/:section/gallery', (req, res) => {
 });
 
 app.get('/:section/projects', (req, res) => {
-    const validSections = ['game', '3d_print', 'vr'];
-    const section = req.params.section;
-
-    if (!validSections.includes(section)) {
-        return res.status(404).send('Not found');
+    const section = validateSection(req.params.section);
+    if (!section) {
+        return res.status(404).render('pages/error', {
+            title: '404 - Nie znaleziono',
+            error: 'Nieprawidłowa sekcja'
+        });
     }
 
     const sectionData = {
@@ -242,21 +310,17 @@ app.get('/:section/projects', (req, res) => {
     });
 });
 
-// API galerii
+// API galerii z zabezpieczeniami
 app.get('/api/gallery-images/:section', async (req, res) => {
     try {
-        const {section} = req.params;
-        const sectionPaths = {
-            'game': path.join(__dirname, 'public', 'img', 'game', 'gallery'),
-            '3d_print': path.join(__dirname, 'public', 'img', '3d_print', 'gallery'),
-            'vr': path.join(__dirname, 'public', 'img', 'vr', 'gallery')
-        };
-
-        if (!sectionPaths[section]) {
-            return res.status(404).json({error: 'Nieznana sekcja'});
+        const section = validateSection(req.params.section);
+        if (!section) {
+            return res.status(404).json({ error: 'Nieznana sekcja' });
         }
 
-        const galleryPath = sectionPaths[section];
+        // Sanityzacja ścieżki
+        const safeSectionPath = path.normalize(section).replace(/^(\.\.(\/|\\|$))+/, '');
+        const galleryPath = path.join(__dirname, 'public', 'img', safeSectionPath, 'gallery');
 
         try {
             await fs.access(galleryPath);
@@ -265,24 +329,29 @@ app.get('/api/gallery-images/:section', async (req, res) => {
         }
 
         const files = await fs.readdir(galleryPath);
-
         const images = files
-            .filter(file => ['.jpg', '.jpeg', '.png', '.svg'].includes(path.extname(file).toLowerCase()))
+            .filter(file => {
+                const ext = path.extname(file).toLowerCase();
+                return ALLOWED_EXTENSIONS.has(ext);
+            })
             .map(file => ({
-                src: `/img/${section}/gallery/${file}`,
+                src: `/img/${safeSectionPath}/gallery/${file}`,
                 alt: path.basename(file, path.extname(file))
             }));
 
-        console.log(`Znalezione obrazy dla sekcji ${section}:`, images);
+        if (process.env.NODE_ENV === 'development') {
+            console.log(`Znalezione obrazy dla sekcji ${section}:`, images);
+        }
+        
         res.json(images);
     } catch (error) {
-        console.error('Error reading gallery directory:', error);
-        res.status(500).json({error: 'Failed to load images', details: error.message});
+        console.error('Gallery error:', error);
+        res.status(500).json({ error: 'Wystąpił błąd podczas ładowania galerii' });
     }
 });
 
 // Obsługa 404
-app.use((req, res, next) => {
+app.use((req, res) => {
     res.status(404).render('pages/error', {
         title: '404 - Nie znaleziono',
         error: 'Strona nie została znaleziona'
@@ -291,15 +360,26 @@ app.use((req, res, next) => {
 
 // Obsługa błędów
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).render('pages/error', {
+    console.error('Error:', {
+        message: err.message,
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
+    
+    res.status(err.status || 500).render('pages/error', {
         title: '500 - Błąd serwera',
-        error: 'Wystąpił błąd serwera'
+        error: process.env.NODE_ENV === 'production' 
+            ? 'Wystąpił błąd serwera' 
+            : err.message
     });
 });
 
-const PORT = 3000;
+// Konfiguracja serwera
+const PORT = process.env.PORT || 3000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`API galerii dostępne pod: http://localhost:${PORT}/api/gallery-images/:section`);
+    if (NODE_ENV === 'development') {
+        console.log(`Server running on port ${PORT}`);
+        console.log(`API galerii dostępne pod: http://localhost:${PORT}/api/gallery-images/:section`);
+    }
 });

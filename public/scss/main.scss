@@ -1,0 +1,56 @@
+// Base
+@use 'base/variables' as *;
+@use 'base/mixins' as *;
+@use 'base/reset';
+
+// Layout
+@use 'layout/header';
+@use 'layout/navigation';
+@use 'layout/footer';
+
+// Components
+@use 'components/buttons';
+@use 'components/cards';
+@use 'components/gallery';
+
+// Utilities
+.transition-standard {
+  transition: $transition-standard;
+}
+
+.hover-transform {
+  transition: $transition-standard;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+// Animations
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.technologies h2 i,
+.team-members h2 i {
+  animation: pulse 2s infinite;
+}
+
+// Map
+#map {
+  height: 350px;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: $border-radius-standard;
+  border: 2px solid $primary-dark;
+  box-shadow: $box-shadow-standard;
+  position: relative;
+  z-index: 1;
+
+  @include media-breakpoint-down(md) {
+    height: 300px;
+    margin-bottom: 30px;
+  }
+}

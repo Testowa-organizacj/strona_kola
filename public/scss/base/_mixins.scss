@@ -1,0 +1,45 @@
+@use 'variables' as *;
+
+@mixin media-breakpoint-down($breakpoint) {
+  @media (max-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+@mixin hover-lift($distance: -5px) {
+  transition: $transition-standard;
+  
+  &:hover {
+    transform: translateY($distance);
+    box-shadow: $box-shadow-standard;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin lightbox-control {
+  background: $lightbox-control-bg;
+  border: none;
+  color: $white;
+  cursor: pointer;
+  transition: $transition-standard;
+  @include flex-center;
+}
+
+@mixin card-base {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  background: linear-gradient(145deg, $white, #f5f5f5);
+}
